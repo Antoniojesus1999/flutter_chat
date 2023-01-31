@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 //Pinta el logo
 class Logo extends StatelessWidget {
-  const Logo({super.key});
+  final String titulo;
+  const Logo({super.key, required this.titulo});
 
   @override
   Widget build(BuildContext context) {
@@ -11,10 +12,10 @@ class Logo extends StatelessWidget {
         width: 170,
         margin: const EdgeInsets.only(top: 50),
         child: Column(
-          children: const [
-            Image(image: AssetImage('assets/logo.png')),
-            SizedBox(height: 20),
-            Text('Messenger', style: TextStyle(fontSize: 30))
+          children: [
+            const Image(image: AssetImage('assets/logo.png')),
+            const SizedBox(height: 20),
+            Text(titulo, style: const TextStyle(fontSize: 30))
           ],
         ),
       ),

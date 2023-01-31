@@ -21,9 +21,14 @@ class LoginPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Logo(),
+                const Logo(
+                  titulo: 'Messenger',
+                ),
                 const _Form(),
-                const Labels(),
+                const Labels(
+                    ruta: 'register',
+                    titulo: '¿No tienes cuenta?',
+                    subtitulo: 'Cree una ahora!'),
                 Container(
                   margin: const EdgeInsets.only(bottom: 20),
                   child: const Text(
@@ -50,6 +55,7 @@ class _Form extends StatefulWidget {
 class _FormState extends State<_Form> {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,7 +75,12 @@ class _FormState extends State<_Form> {
             texController: passCtrl,
             isPassword: true,
           ),
-          BotonAzul(text: 'Ingrese', onPressed: () {})
+          BotonAzul(
+              text: 'Ingrese',
+              onPressed: () {
+                print(emailCtrl);
+                print(passCtrl);
+              })
         ],
       ),
     );
