@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ChatMessage extends StatelessWidget {
+class ChatMessage extends StatefulWidget {
   final String texto;
   final String uid;
   final AnimationController animationController;
@@ -11,13 +11,19 @@ class ChatMessage extends StatelessWidget {
       required this.animationController});
 
   @override
+  State<ChatMessage> createState() => _ChatMessageState();
+}
+
+class _ChatMessageState extends State<ChatMessage> {
+  @override
   Widget build(BuildContext context) {
     return FadeTransition(
-        opacity: animationController,
+        opacity: widget.animationController,
         child: SizeTransition(
           sizeFactor: CurvedAnimation(
-              parent: animationController, curve: Curves.easeInOut),
-          child: Container(child: uid == '123' ? _myMessage() : _notMessage()),
+              parent: widget.animationController, curve: Curves.easeOut),
+          child: Container(
+              child: widget.uid == '123' ? _myMessage() : _notMessage()),
         ));
   }
 
@@ -30,7 +36,7 @@ class ChatMessage extends StatelessWidget {
         decoration: const BoxDecoration(
             color: Color(0xff4D9EF6),
             borderRadius: BorderRadius.all(Radius.circular(20))),
-        child: Text(texto),
+        child: Text(widget.texto),
       ),
     );
   }
@@ -44,7 +50,7 @@ class ChatMessage extends StatelessWidget {
         decoration: const BoxDecoration(
             color: Color(0xffE4E5E8),
             borderRadius: BorderRadius.all(Radius.circular(20))),
-        child: Text(texto),
+        child: Text(widget.texto),
       ),
     );
   }
