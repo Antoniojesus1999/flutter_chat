@@ -5,6 +5,9 @@ import 'package:flutter_chat/widgets/boton_azul.dart';
 import 'package:flutter_chat/widgets/custom_input.dart';
 import 'package:flutter_chat/widgets/labels.dart';
 import 'package:flutter_chat/widgets/logo.dart';
+import 'package:provider/provider.dart';
+
+import '../services/auth_service.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -78,8 +81,12 @@ class _FormState extends State<_Form> {
           BotonAzul(
               text: 'Ingrese',
               onPressed: () {
-                print(emailCtrl);
-                print(passCtrl);
+                print(emailCtrl.text);
+                print(passCtrl.text);
+
+                final autoService =
+                    Provider.of<AuthService>(context, listen: false);
+                autoService.login(emailCtrl.text, passCtrl.text);
               })
         ],
       ),
