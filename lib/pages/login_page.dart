@@ -7,6 +7,7 @@ import 'package:flutter_chat/widgets/labels.dart';
 import 'package:flutter_chat/widgets/logo.dart';
 import 'package:provider/provider.dart';
 
+import '../helpers/mostrar_alerta.dart';
 import '../services/auth_service.dart';
 
 class LoginPage extends StatelessWidget {
@@ -83,10 +84,15 @@ class _FormState extends State<_Form> {
               text: 'Ingrese',
               onPressed: authService.autenticando
                   ? null
-                  : () {
+                  : () async {
                       FocusScope.of(context).unfocus();
-                      authService.login(
+                      final loginOk = await authService.login(
                           emailCtrl.text.trim(), passCtrl.text.trim());
+                      if (loginOk) {
+                      } else {
+                        mostrarAlerta(context, 'Login incorrecto',
+                            'Revise sus credenciales');
+                      }
                     })
         ],
       ),
