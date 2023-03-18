@@ -3,6 +3,10 @@ import 'package:flutter_chat/widgets/boton_azul.dart';
 import 'package:flutter_chat/widgets/custom_input.dart';
 import 'package:flutter_chat/widgets/labels.dart';
 import 'package:flutter_chat/widgets/logo.dart';
+import 'package:provider/provider.dart';
+
+import '../helpers/mostrar_alerta.dart';
+import '../services/auth_service.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -55,6 +59,7 @@ class _FormState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Container(
       margin: const EdgeInsets.only(top: 40),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -79,11 +84,23 @@ class _FormState extends State<_Form> {
             isPassword: true,
           ),
           BotonAzul(
-              text: 'Ingrese',
-              onPressed: () {
-                print(emailCtrl);
-                print(passCtrl);
-              })
+              text: 'Crear cuenta',
+              onPressed: authService.autenticando
+                  ? null
+                  : () async {
+                      FocusScope.of(context).unfocus();
+                      final registerOk = await authService.register(
+                          nombreCtrl.text.trim(),
+                          emailCtrl.text.trim(),
+                          passCtrl.text.trim());
+                      if (registerOk) {
+                        //TODO: Conectar a nuestro socket server
+                        Navigator.pushReplacementNamed(context, 'usuarios');
+                      } else {
+                        mostrarAlerta(context, 'registro incorrecto',
+                            'Tienes que añadir usuario contraseña y un email valido');
+                      }
+                    })
         ],
       ),
     );
