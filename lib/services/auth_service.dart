@@ -38,6 +38,7 @@ class AuthService with ChangeNotifier {
 
     final resp = await http.post(Uri.parse('${Enviroment.apiUrl}/login'),
         body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
+    print(resp);
 
     autenticando = false;
     if (resp.statusCode == 200) {
@@ -47,6 +48,24 @@ class AuthService with ChangeNotifier {
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future<bool> isLoggedIn() async {
+    final token = await this._storage.read(key: 'token');
+    final resp = await http.get(Uri.parse('${Enviroment.apiUrl}/login/renew'),
+        headers: {'Content-Type': 'application/json', 'x-token': token!});
+    print('resp -> $resp');
+
+    autenticando = false;
+    if (resp.statusCode == 200) {
+      final loginResponse = loginResponseFromJson(resp.body);
+      usuario = loginResponse.usuario;
+      _guadarToken(loginResponse.token);
+      return true;
+    } else {
+      final respBody = jsonDecode(resp.body);
+      return respBody['msg'];
     }
   }
 

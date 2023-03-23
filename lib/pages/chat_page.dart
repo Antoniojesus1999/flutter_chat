@@ -14,7 +14,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
-  List<ChatMessage> _message = [];
+  final List<ChatMessage> _message = [];
   bool _estaEscribiendo = false;
   @override
   Widget build(BuildContext context) {
