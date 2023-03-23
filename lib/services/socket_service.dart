@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 enum ServerStatus { Online, Offline, Connecting }
@@ -13,7 +12,10 @@ class SocketService with ChangeNotifier {
   IO.Socket get socket => this._socket;
   Function get emit => this._socket.emit;
 
-  SocketService() {
+  SocketService(
+    this._serverStatus,
+    this._socket,
+  ) {
     this._initConfig();
   }
 
