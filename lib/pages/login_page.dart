@@ -90,8 +90,11 @@ class _FormState extends State<_Form> {
                           emailCtrl.text.trim(), passCtrl.text.trim());
                       if (loginOk) {
                         //TODO: Conectar a nuestro socket server
+
+                        // ignore: use_build_context_synchronously
                         Navigator.pushReplacementNamed(context, 'usuarios');
                       } else {
+                        // ignore: use_build_context_synchronously
                         mostrarAlerta(context, 'Login incorrecto',
                             'Revise sus credenciales');
                       }
