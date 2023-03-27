@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat/services/auth_service.dart';
 import 'package:flutter_chat/widgets/chat_message.dart';
 import 'package:provider/provider.dart';
 
-import '../services/char_service.dart';
+import '../services/chat_service.dart';
+import '../services/socket_service.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -17,11 +19,40 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
+
+  late ChatService chatService;
+  late SocketService socketService;
+  late AuthService authService;
+
   final List<ChatMessage> _message = [];
   bool _estaEscribiendo = false;
+
+  @override
+  void initState() {
+    super.initState();
+    chatService = Provider.of<ChatService>(context, listen: false);
+    socketService = Provider.of<SocketService>(context, listen: false);
+    authService = Provider.of<AuthService>(context, listen: false);
+    socketService.socket
+        .on('mensaje-personal', (payload) => _escucharMensaje(payload));
+  }
+
+  void _escucharMensaje(dynamic payload) {
+    print('Tengo mensaje -> $payload');
+    ChatMessage message = ChatMessage(
+        texto: payload['mensaje'],
+        uid: payload['de'],
+        animationController: AnimationController(
+            vsync: this, duration: const Duration(milliseconds: 300)));
+    setState(() {
+      _message.insert(0, message);
+    });
+    // Ejecutamos la animnación
+    message.animationController.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final chatService = Provider.of<ChatService>(context);
     final usuarioPara = chatService.usuarioPara;
 
     return Scaffold(
@@ -135,6 +166,11 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     newMessage.animationController.forward();
     setState(() {
       _estaEscribiendo = false;
+    });
+    socketService.emit('mensaje-personal', {
+      'de': authService.usuario.uid,
+      'para': chatService.usuarioPara.uid,
+      'mensaje': text,
     });
   }
 

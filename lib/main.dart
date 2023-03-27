@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat/routes/routes.dart';
 import 'package:flutter_chat/services/auth_service.dart';
-import 'package:flutter_chat/services/char_service.dart';
+import 'package:flutter_chat/services/chat_service.dart';
 import 'package:flutter_chat/services/socket_service.dart';
 import 'package:provider/provider.dart';
 

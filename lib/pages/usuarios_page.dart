@@ -4,7 +4,7 @@ import 'package:flutter_chat/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../services/char_service.dart';
+import '../services/chat_service.dart';
 import '../services/socket_service.dart';
 import '../services/usuarios_services.dart';
 
